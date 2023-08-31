@@ -1,0 +1,17 @@
+{
+  "name": "telegram-meson-bot",
+  "version": "1.0.0",
+  "description": "none",
+  "main": "index.js",
+  "repository": "none",
+  "author": "none",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "cross-fetch": "^4.0.0",
+    "dotenv": "^16.3.1",
+    "node-telegram-bot-api": "^0.61.0"
+  }
+}
