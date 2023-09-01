@@ -80,15 +80,16 @@ app.listen(PORT, async () => {
                 bot.sendMessage(chatId, '⚠️Invalid address')
                 return
             }
-            if (match.length == 42)
-                match = match.toLowerCase()
-            const resp = await fetch(`https://explorer.meson.fi/api/v1/address/${match}/swap`)
+            let address = match[0]
+            if (address.length == 42)
+                address = address.toLowerCase()
+            const resp = await fetch(`https://explorer.meson.fi/api/v1/address/${address}/swap`)
             const data = await resp.json()
             if (data.result?.total) {
                 bot.sendMessage(chatId, 'Click the button below to check transactions:', {
                     reply_markup: {
                         inline_keyboard: [
-                            [{ text: 'Check My Transactions', url: `https://explorer.meson.fi/address/${match}` }]
+                            [{ text: 'Check My Transactions', url: `https://explorer.meson.fi/address/${address}` }]
                         ]
                     }
                 })
