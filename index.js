@@ -26,7 +26,7 @@ app.listen(PORT, async () => {
 
     bot.onText(/\/start/, (msg) => {
         const chatId = msg.chat.id
-        const userName=msg.from.username
+        const userName = msg.from.username
         const menu_text = `Welcome @${userName}! If you have any questions or inquiries, please select the appropriate option below.\n\nIf you need assistance with transactions on Meson, please following these steps for support:\n\n1. Join the Meson Discord server using the link: https://discord.gg/meson\n2. Click the 'Get Help' button below.
         \nIf you need further assistance, please send admin a private message: 
         \n👨‍💼 Moderator: @MrFish\n💰 >$20k swap appointment: @exterkti 
@@ -37,7 +37,7 @@ app.listen(PORT, async () => {
 
     bot.onText(/\/menu/, async (msg) => {
         const chatId = msg.chat.id
-        const userName=msg.from.username
+        const userName = msg.from.username
         const userId = msg.from.id
         console.log(userId)
         const menu_text = `Welcome @${userName}! If you have any questions or inquiries, please select the appropriate option below.\n\nIf you need assistance with transactions on Meson, please following these steps for support:\n\n1. Join the Meson Discord server using the link: https://discord.gg/meson\n2. Click the 'Get Help' button below.
@@ -73,16 +73,22 @@ app.listen(PORT, async () => {
     bot.on('message', async (msg) => {
         if (msg.reply_to_message && msg.reply_to_message.text === 'Please enter address:') {
             const chatId = msg.chat.id
-            let address = msg.text
-            if (address.length == 42)
-                address = address.toLowerCase()
-            const resp = await fetch(`https://explorer.meson.fi/api/v1/address/${address}/swap`)
+            let input = msg.text
+            const regex = /(0x|T)[0-9a-zA-Z]{10,}/
+            match = input.match(regex)
+            if (!match) {
+                bot.sendMessage(chatId, '⚠️Invalid address')
+                return
+            }
+            if (match.length == 42)
+                match = match.toLowerCase()
+            const resp = await fetch(`https://explorer.meson.fi/api/v1/address/${match}/swap`)
             const data = await resp.json()
             if (data.result?.total) {
                 bot.sendMessage(chatId, 'Click the button below to check transactions:', {
                     reply_markup: {
                         inline_keyboard: [
-                            [{ text: 'Check My Transactions', url: `https://explorer.meson.fi/address/${address}` }]
+                            [{ text: 'Check My Transactions', url: `https://explorer.meson.fi/address/${match}` }]
                         ]
                     }
                 })
