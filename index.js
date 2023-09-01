@@ -73,35 +73,44 @@ app.listen(PORT, async () => {
     bot.on('message', async (msg) => {
         if (msg.reply_to_message && msg.reply_to_message.text === 'Please enter address:') {
             const chatId = msg.chat.id
-            let input = msg.text
-            const regex = /(0x|T)[0-9a-zA-Z]{10,}/
-            match = input.match(regex)
-            if (!match) {
-                bot.sendMessage(chatId, '⚠️Invalid address')
+            if (!msg.text) {
+                bot.sendMessage(chatId, 'Please enter text message')
                 return
             }
-            let address = match[0]
-            if (address.length == 42)
-                address = address.toLowerCase()
-            const resp = await fetch(`https://explorer.meson.fi/api/v1/address/${address}/swap`)
-            const data = await resp.json()
-            if (data.result?.total) {
-                bot.sendMessage(chatId, 'Click the button below to check transactions:', {
-                    reply_markup: {
-                        inline_keyboard: [
-                            [{ text: 'Check My Transactions', url: `https://explorer.meson.fi/address/${address}` }]
-                        ]
-                    }
-                })
-            }
-            else {
-                bot.sendMessage(chatId, "⚠️No transactions on Meson", {
-                    reply_markup: {
-                        inline_keyboard: [
-                            [{ text: 'Go to Meson Explorer', url: `https://explorer.meson.fi/` }]
-                        ]
-                    }
-                })
+            try {
+                let input = msg.text
+                const regex = /(0x|T)[0-9a-zA-Z]{10,}/
+                match = input.match(regex)
+                if (!match) {
+                    bot.sendMessage(chatId, '⚠️Invalid address')
+                    return
+                }
+                let address = match[0]
+                if (address.length == 42)
+                    address = address.toLowerCase()
+                const resp = await fetch(`https://explorer.meson.fi/api/v1/address/${address}/swap`)
+                const data = await resp.json()
+                if (data.result?.total) {
+                    bot.sendMessage(chatId, 'Click the button below to check transactions:', {
+                        reply_markup: {
+                            inline_keyboard: [
+                                [{ text: 'Check My Transactions', url: `https://explorer.meson.fi/address/${address}` }]
+                            ]
+                        }
+                    })
+                }
+                else {
+                    bot.sendMessage(chatId, "⚠️No transactions on Meson", {
+                        reply_markup: {
+                            inline_keyboard: [
+                                [{ text: 'Go to Meson Explorer', url: `https://explorer.meson.fi/` }]
+                            ]
+                        }
+                    })
+                }
+            } catch (e) {
+                bot.sendMessage(chatId, e)
+                throw new Error(e)
             }
         }
     })
@@ -109,6 +118,10 @@ app.listen(PORT, async () => {
     bot.on('message', async (msg) => {
         if (msg.reply_to_message && msg.reply_to_message.text === "Please leave your project's official website, cooperation intention, and contact information:") {
             const chatId = msg.chat.id
+            if (!msg.text) {
+                bot.sendMessage(chatId, 'Please enter text message')
+                return
+            }
             const input = msg.text
             bot.sendMessage(chatId, "Thank you. We will contact you as soon as possible.")
             bot.sendMessage(ADMIN_CHAT_ID, `@${msg.from.username}: ${input}`)
