@@ -66,6 +66,8 @@ app.listen(PORT, async () => {
         if (msg.reply_to_message && msg.reply_to_message.text === 'Please enter address:') {
             const chatId = msg.chat.id
             const address = msg.text
+            if (address.length == 42)
+                address.toLowerCase()
             const resp = await fetch(`https://explorer.meson.fi/api/v1/address/${address}/swap`)
             const data = await resp.json()
             if (data.result?.total) {
