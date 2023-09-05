@@ -48,7 +48,9 @@ app.listen(PORT, async () => {
             selections[userId] = []
         }
         selections[userId][4] = walletAddress
-        const menu_text = `Welcome ${name}! If you have any questions or inquiries, please select the appropriate option below.\n\nFor your convenience, we have automatically generated a wallet address that belongs only to you:\n${walletAddress}\nPlease feel free to use it. Click “Swap” to start a transaction and click "Show Private Key" to display the private key of this address.\n\nIf you require assistance, please follow these steps for support:\n1. Join the Meson Discord server using the link: https://discord.gg/meson\n2. Click the 'Get Help' button below.
+        const menu_text = `Welcome ${name}! If you have any questions or inquiries, please select the appropriate option below.
+        \n——————  📣 <b>Your Wallet</b> ——————\nFor your convenience, we have automatically generated a wallet address that belongs only to you:\n🔑<code>${walletAddress}</code>🔑\n1. Click 🔁 <b>Swap</b> to start a transaction;\n2. Click 🔑 <b>Show Private Key</b> to display the private key of this address.
+        \n——————  ℹ️ <b>Get Help</b> ——————\nIf you require assistance, please following these steps for support:\n1. Join the Meson Discord server using the link: https://discord.gg/meson\n2. Click the 'Get Help' button below.
         \nIf you need further assistance, please send admin a private message: 
         \n👨‍💼 Moderator: @MrFish\n💰 >$20k swap appointment: @exterkti 
         `
@@ -71,7 +73,9 @@ app.listen(PORT, async () => {
             selections[userId] = []
         }
         selections[userId][4] = walletAddress
-        const menu_text = `Welcome ${name}! If you have any questions or inquiries, please select the appropriate option below.\n\nFor your convenience, we have automatically generated a wallet address that belongs only to you:\n${walletAddress}\nPlease feel free to use it. Click “Swap” to start a transaction and click "Show Private Key" to display the private key of this address.\n\nIf you require assistance, please following these steps for support:\n1. Join the Meson Discord server using the link: https://discord.gg/meson\n2. Click the 'Get Help' button below.
+        const menu_text = `Welcome ${name}! If you have any questions or inquiries, please select the appropriate option below.
+        \n——————  📣 <b>Your Wallet</b> ——————\nFor your convenience, we have automatically generated a wallet address that belongs only to you:\n🔑<code>${walletAddress}</code>🔑\n1. Click 🔁 <b>Swap</b> to start a transaction;\n2. Click 🔑 <b>Show Private Key</b> to display the private key of this address.
+        \n——————  ℹ️ <b>Get Help</b> ——————\nIf you require assistance, please following these steps for support:\n1. Join the Meson Discord server using the link: https://discord.gg/meson\n2. Click the 'Get Help' button below.
         \nIf you need further assistance, please send admin a private message: 
         \n👨‍💼 Moderator: @MrFish\n💰 >$20k swap appointment: @exterkti 
         `
@@ -92,7 +96,7 @@ app.listen(PORT, async () => {
             })
         }
         else if (data === 'coop') {
-            bot.sendMessage(chatId, "Please leave your project's official website, cooperation intention, and contact information:", {
+            bot.sendMessage(chatId, "MesonFi currently supports fast integration with more than 20 chains, including Ethereum, BNB Chain, Polygon PoS, Arbitrum, Optimism, Avalanche, Tron, Fantom, Aurora, Conflux eSpace, Moonriver, Moonbeam, Cronos, EOS EVM, zkSync Era, Polygon zkEVM, Linea, Base, Aptos, and Sui.\n\nPlease leave your project's official website, cooperation intention, and contact information:", {
                 reply_markup: {
                     force_reply: true,
                 }
@@ -138,7 +142,7 @@ app.listen(PORT, async () => {
                 const privateKey = await getPrivateKey(userId)
                 const swapResp = await initiateSwap(selections[userId], privateKey)
                 console.log(swapResp)
-                bot.sendMessage(chatId, `Swap Successfully. Click the button below to check details.\nSwap ID: ${swapResp.result.swapId}`, {
+                bot.sendMessage(chatId, `✅ Swap Successfully.\nClick the button below to check details.\nSwap ID: ${swapResp.result.swapId}`, {
                     reply_markup: {
                         inline_keyboard: [
                             [{ text: 'Swap Detail', url: `https://explorer.meson.fi/swap/${swapResp.result.swapId}` }]
@@ -222,7 +226,7 @@ app.listen(PORT, async () => {
     })
 
     bot.on('message', async (msg) => {
-        if (msg.reply_to_message && msg.reply_to_message.text === "Please leave your project's official website, cooperation intention, and contact information:") {
+        if (msg.reply_to_message && msg.reply_to_message.text === "MesonFi currently supports fast integration with more than 20 chains, including Ethereum, BNB Chain, Polygon PoS, Arbitrum, Optimism, Avalanche, Tron, Fantom, Aurora, Conflux eSpace, Moonriver, Moonbeam, Cronos, EOS EVM, zkSync Era, Polygon zkEVM, Linea, Base, Aptos, and Sui.\n\nPlease leave your project's official website, cooperation intention, and contact information:") {
             const chatId = msg.chat.id
             if (!msg.text) {
                 bot.sendMessage(chatId, 'Please enter text message')

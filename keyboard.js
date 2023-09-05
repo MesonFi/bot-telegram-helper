@@ -1,4 +1,5 @@
 const mainMenu = {
+    parse_mode: 'HTML',
     reply_markup: {
         inline_keyboard: [
             [{ text: '👨‍💼 Get Help', url: 'https://discord.com/channels/904570465266323456/949212159693434891' }],
