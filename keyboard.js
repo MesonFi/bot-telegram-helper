@@ -3,8 +3,8 @@ const mainMenu = {
         inline_keyboard: [
             [{ text: '👨‍💼 Get Help', url: 'https://discord.com/channels/904570465266323456/949212159693434891' }],
             [
-                { text: '🔁Swap', callback_data: 'swap' },
-                { text: '🔑Show Private Key', callback_data: 'privateKey' }
+                { text: '🔁 Swap', callback_data: 'swap' },
+                { text: '🔑 Show Private Key', callback_data: 'privateKey' }
             ],
             [
                 { text: '🧾 Meson Explorer', callback_data: 'explorer' },
