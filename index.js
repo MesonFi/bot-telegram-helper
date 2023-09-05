@@ -58,7 +58,7 @@ app.listen(PORT, async () => {
 
     bot.onText(/\/menu/, async (msg) => {
         const chatId = msg.chat.id
-        const userName = msg.from.first_name
+        const userName = msg.from.username
         const userId = msg.from.id
         let name
         if (!userName) {
