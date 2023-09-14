@@ -14,7 +14,7 @@ const {
 
 let walletAddress
 const selections = {}
-const map = {
+const NETWORK_NAMES = {
     'eth': 'Ethereum',
     'bnb': 'BNB Chain',
     'arb': 'Arbitrum'
@@ -253,10 +253,25 @@ app.listen(PORT, async () => {
             selections[userId][5] = amount
 
             if (!selections[userId][4]) selections[userId][4] = await getWallet(userId)
-            bot.sendMessage(chatId, `Please confirm the swap details:\nFrom/To: ${map[selections[userId][0]]} (${selections[userId][1].toUpperCase()}) → ${map[selections[userId][2]]} (${selections[userId][3].toUpperCase()})\nAmount: ${selections[userId][5]} ${selections[userId][1].toUpperCase()}\nSender: ${selections[userId][4]}\nRecipient: ${selections[userId][4]}`)
+            const [fromNetwork, rawFromToken, toNetwork, rawToToken, addr] = selections[userId]
+            const fromToken = rawFromToken?.toUpperCase()
+            const toToken = rawToToken?.toUpperCase()
+            bot.sendMessage(chatId, [
+                `Please confirm the swap details:`,
+                `From/To: ${NETWORK_NAMES[fromNetwork]} (${fromToken}) → ${NETWORK_NAMES[toNetwork]} (${toToken})`,
+                `Amount: ${amount} ${fromToken}`,
+                `Sender: ${addr}`,
+                `Recipient: ${addr}`
+            ].join('\n'))
             const fee = await getPrice(selections[userId])
             if (!fee.error) {
-                bot.sendMessage(chatId, `Total Fee: ${fee.result.totalFee} ${selections[userId][1].toUpperCase()}\nService Fee: ${fee.result.serviceFee} ${selections[userId][1].toUpperCase()}\nLP Fee: ${fee.result.lpFee} ${selections[userId][1].toUpperCase()}\n\nReceive: ${(selections[userId][5] - fee.result.totalFee).toFixed(6)} ${selections[userId][1].toUpperCase()}`, confirm)
+                bot.sendMessage(chatId, [
+                    `Total Fee: ${fee.result.totalFee} ${fromToken}`,
+                    `Service Fee: ${fee.result.serviceFee} ${fromToken}`,
+                    `LP Fee: ${fee.result.lpFee} ${fromToken}`,
+                    '',
+                    `Receive: ${(amount - fee.result.totalFee).toFixed(6)} ${fromToken}`
+                ].join('\n'), confirm)
             }
             else {
                 if (fee.error.message === "invalid-amount") {
